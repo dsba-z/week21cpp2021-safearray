@@ -11,13 +11,21 @@ public:
 
     /// The default constructor.
     SafeArray()
-    {}
-
-    /// Constructor creates an array with \a sz elements of value \a def
-    SafeArray(size_t sz, T def /* = ???*/)
-//      constructor delegate
     {
-        
+        _size = 0;
+        _arr = nullptr;
+    }
+
+    /// Constructor creates an array with \a sz
+    ///  elements of value \a def
+    SafeArray(size_t sz, T def = T()):
+    SafeArray()
+    {
+        // new
+        for (int i = 0; i < sz; ++i)
+        {
+            _arr[i] = def;
+        }
     }
 
     /// The copy constructor.
@@ -31,7 +39,7 @@ public:
     SafeArray(std::initializer_list<T> vals)
 //    ????
     {
-
+        int a[] = {1, 2, 3};
     }
 
 
@@ -45,6 +53,10 @@ public:
     /// The Copy Assignment operator overloading.
 //    <output type> operator = (<input type> rhv)
 //    {
+        SafeArray<T> temp = *this;
+//        T* new_arr = new T[_size];
+        swap(*this, temp);
+//        delete new_arr[];
 
 //    }
 
