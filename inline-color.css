@@ -1,0 +1,4 @@
+:not(pre):not(.hljs) > code {
+	color: #090EA5; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
