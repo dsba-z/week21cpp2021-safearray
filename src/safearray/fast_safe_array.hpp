@@ -6,7 +6,7 @@
 #include <algorithm>        // std::min
 #include <stdexcept>        // std::out_of_range
 
-const size_t BUFFER_STEP = 100;
+const size_t BUFFER_STEP = 10000;
 
 template<typename T>
 class FastSafeArray {
@@ -28,6 +28,7 @@ public:
 
         // 0 -> 0
         // 1 -> 20
+        // 2 -> 20
         // 19 -> 20
         // 20 -> 20
         // 21 -> 40
