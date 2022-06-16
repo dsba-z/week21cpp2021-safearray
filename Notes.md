@@ -66,3 +66,86 @@ It should delete the previously allocated memory and allocate new memory with th
 
 The function should correctly handle edge cases, not performing unncessesary actions.
 
+# Part 2. FastSafeArray
+
+## push_back
+
+Add a method `void push_back(T value);` to SafeArray. It should resize the array by adding space for 1 more element, and then write `value` to the new space. You can do it with the method `resize()` in one line.
+
+## FastSafeArray
+
+After you finished making `SafeArray` and made sure it works correctly, create a copy of that class, called `FastSafeArray`. Keep both versions so you can compare their speed later.
+
+In `FastSafeArray` implement the following:
+
+### Buffer
+
+Add an extra variable to `FastSafeArray`, `size_t _bufferSize`. Split the size logic into two parts. `_size` shows how many values were added to the array, it should be the value an outside user cares about. `_bufferSize` should be the size of allocated space for `_arr`, it handles logic related to memory allocation.
+
+At this point, the sizes should be equal because every time memory is allocated, it is filled with values and vice versa.
+
+### Reserving memory (normal version)
+
+
+Change the behavior of `FastSafeArray`, so that extra space is allocated for potential new values. Allocate space in integer intervals, for example in increments of 20. If your array is empty and you add a single element, use `_arr = new T[20];`. If your array has 99 elements and you resize it to 110 elements, use `_arr = new T[120];`.
+
+This way you don't have to resize the array that often, which should improve speed.
+
+### Reserving memory (hard version)
+
+Change the behavior of `FastSafeArray`, so that extra space is allocated for potential new values. Increase allocated space exponentially, for example, in powers of 2. If your array is empty and you add a single element, use `_arr = new T[1];`. If your array has 50 elements and you resize it to 110 elements, use `_arr = new T[128];`.
+
+This way you don't have to resize the array that often, which should improve speed.
+
+
+## Testing
+
+Use 10000 `push_back` operations to test the speed of your arrays.
+
+An example of how it can be done
+
+```cpp
+void testSafeArrayTime()
+{
+    SafeArray<int> sa;
+
+    for (int i = 0; i < 10000; ++i) {
+        sa.push_back(0);
+    }
+}
+
+void testFastSafeArrayTime()
+{
+    FastSafeArray<int> fsa;
+
+    for (int i = 0; i < 10000; ++i) {
+        fsa.push_back(0);
+    }
+}
+
+
+void measureTime(void (*testFunction)())
+{
+    SafeArray<int> sa;
+    
+    std::clock_t c_start = std::clock();
+    auto t_start = std::chrono::high_resolution_clock::now();
+    
+    testFunction();
+    
+    std::clock_t c_end = std::clock();
+    auto t_end = std::chrono::high_resolution_clock::now();
+ 
+    std::cout << std::fixed << std::setprecision(2) << "CPU time used: "
+              << 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC << " ms\n"
+              << "Wall clock time passed: "
+              << std::chrono::duration<double, std::milli>(t_end-t_start).count()
+              << " ms\n";
+}
+
+void testTime()
+{
+    measureTime(testSafeArrayTime);
+    measureTime(testFastSafeArrayTime);
+}
+```
