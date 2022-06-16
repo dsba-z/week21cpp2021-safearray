@@ -21,4 +21,5 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
 add_executable(workshop40
     safearray/main.cpp
     safearray/safe_array.hpp
+    safearray/fast_safe_array.hpp
 )

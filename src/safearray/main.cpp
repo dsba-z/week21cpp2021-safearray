@@ -9,8 +9,11 @@
 #include <iostream>
 #include <stdexcept>
 #include <cassert>
+#include <chrono>
+#include <iomanip>
 
 #include "safe_array.hpp"
+#include "fast_safe_array.hpp"
 
 
 void test1()
@@ -104,36 +107,62 @@ void test6()
     std::cout << arr1 << '\n';
 }
 
+void testSafeArrayTime()
+{
+    SafeArray<int> sa;
+
+    for (int i = 0; i < 10000; ++i) {
+        sa.resize(sa.getSize() + 1, 0);
+    }
+}
+
+void testFastSafeArrayTime()
+{
+    FastSafeArray<int> fsa;
+
+    for (int i = 0; i < 10000; ++i) {
+        fsa.resize(fsa.getSize() + 1, 0);
+    }
+}
+
+
+void measureTime(void (*testFunction)())
+{
+    SafeArray<int> sa;
+
+    std::clock_t c_start = std::clock();
+    auto t_start = std::chrono::high_resolution_clock::now();
+
+    testFunction();
+
+    std::clock_t c_end = std::clock();
+    auto t_end = std::chrono::high_resolution_clock::now();
+
+    std::cout << std::fixed << std::setprecision(2) << "CPU time used: "
+              << 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC << " ms\n"
+              << "Wall clock time passed: "
+              << std::chrono::duration<double, std::milli>(t_end-t_start).count()
+              << " ms\n";
+}
+
+void testTime()
+{
+    measureTime(testSafeArrayTime);
+    measureTime(testFastSafeArrayTime);
+}
+
 
 int main()
 {
-    test1();
-    test2();
-    test3();
-    test4();        // copy constr
-    test5();        // copy assgn op
-    test6();        // const initial list
-
-//    try
-//    {
-//        SafeArray a1(0);
-//    }
-//    catch(std::out_of_range& e)
-//    {
-//        std::cerr << "An error is thrown while creating an object: "
-//                  <<  e.what();
-//    }
-//    std::cout << "This line is printed right after the object a1 is created";
-
-//    SafeArray a2(5);
-
-//    SafeArray a2Copy = a2;      // check the proper impl of a copy constructor
-    
-    
-//    SafeArray a3(10);
-//    a3 = a2;
+//    test1();
+//    test2();
+//    test3();
+//    test4();        // copy constr
+//    test5();        // copy assgn op
+//    test6();        // const initial list
 
 
-//    int a = 0;
+    testTime();
+
     return 0;
 }
