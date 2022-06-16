@@ -30,6 +30,7 @@ public:
     }
 
     /// The copy constructor.
+//    template<typename T2>
     SafeArray(const SafeArray& origin)
         :SafeArray(origin._size)
     {
@@ -57,9 +58,9 @@ public:
 
 
     /// The Copy Assignment operator overloading.
-    SafeArray<T>& operator= (const SafeArray<T>& rhv)
+    SafeArray& operator= (const SafeArray& rhv)
     {
-        SafeArray<T> temp(rhv);
+        SafeArray temp(rhv);
         SafeArray::swap(*this, temp);
         return *this;
     }
@@ -132,6 +133,7 @@ private:
     /// correctly. Method guarantees that it doesn't throw under any conditions.
     static void swap(SafeArray<T>& a, SafeArray<T>& b) noexcept
     {
+//        std::swap(a, b);
         std::swap(a._arr, b._arr);
         std::swap(a._size, b._size);
     }

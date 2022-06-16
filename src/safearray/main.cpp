@@ -18,15 +18,16 @@
 
 void test1()
 {
-    SafeArray<int> arr1;
+    FastSafeArray<int> arr1;
     assert(arr1.getSize() == 0);
     assert(arr1.getPtr() == nullptr);
+    std::cout << arr1.getPtr();
 }
 
 
 void test2()
 {
-    SafeArray<int> arr1(5, 42);
+    FastSafeArray<int> arr1(5, 42);
     assert(arr1.getSize() == 5);
     assert(arr1.getPtr() != nullptr);
     assert(arr1[0] == 42);
@@ -41,12 +42,12 @@ void test3()
     int b{};
     int c = int();
 
-    SafeArray<int> arr1;
+    FastSafeArray<int> arr1;
     assert(arr1.getSize() == 0);
     assert(arr1.getPtr() == nullptr);
 
-    arr1.resize(6, 42);
-    assert(arr1.getSize() == 6);
+    arr1.resize(8, 42);
+    assert(arr1.getSize() == 8);
     assert(arr1.getPtr() != nullptr);
     assert(arr1[0] == 42);
     assert(arr1.at(5) == 42);
@@ -54,14 +55,14 @@ void test3()
 
 void test4()
 {
-    SafeArray<int> arr1(5, 42);
+    FastSafeArray<int> arr1(5, 42);
     assert(arr1.getSize() == 5);
     assert(arr1.getPtr() != nullptr);
     assert(arr1[0] == 42);
     assert(arr1.at(4) == 42);
 
     // new array — copied
-    SafeArray<int> arr2 = arr1;      // arr2(arr1)
+    FastSafeArray<int> arr2 = arr1;      // arr2(arr1)
 
     assert(arr2.getSize() == 5);
     assert(arr2.getPtr() != nullptr);
@@ -82,14 +83,14 @@ void test4()
 
 void test5()
 {
-    SafeArray<int> arr1(5, 42);
+    FastSafeArray<int> arr1(5, 42);
     assert(arr1.getSize() == 5);
     assert(arr1.getPtr() != nullptr);
     assert(arr1[0] == 42);
     assert(arr1.at(4) == 42);
 
     // new array
-    SafeArray<int> arr2(1, 10);
+    FastSafeArray<int> arr2(1, 10);
     arr2 = arr1;
     assert(arr2[0] == 42);
     assert(arr2.at(4) == 42);
@@ -98,7 +99,7 @@ void test5()
 
 void test6()
 {
-    SafeArray<int> arr1( {10, 20, 30} );
+    FastSafeArray<int> arr1( {10, 20, 30} );
     assert(arr1.getSize() == 3);
     assert(arr1.getPtr() != nullptr);
     assert(arr1[0] == 10);
@@ -154,12 +155,12 @@ void testTime()
 
 int main()
 {
-//    test1();
-//    test2();
-//    test3();
-//    test4();        // copy constr
-//    test5();        // copy assgn op
-//    test6();        // const initial list
+    test1();
+    test2();
+    test3();
+    test4();        // copy constr
+    test5();        // copy assgn op
+    test6();        // const initial list
 
 
     testTime();
