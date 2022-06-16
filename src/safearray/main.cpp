@@ -111,7 +111,7 @@ void testSafeArrayTime()
 {
     SafeArray<int> sa;
 
-    for (int i = 0; i < 10000; ++i) {
+    for (int i = 0; i < 30000; ++i) {
         sa.resize(sa.getSize() + 1, 0);
     }
 }
@@ -120,7 +120,7 @@ void testFastSafeArrayTime()
 {
     FastSafeArray<int> fsa;
 
-    for (int i = 0; i < 10000; ++i) {
+    for (int i = 0; i < 30000; ++i) {
         fsa.resize(fsa.getSize() + 1, 0);
     }
 }

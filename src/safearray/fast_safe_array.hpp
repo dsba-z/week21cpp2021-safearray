@@ -6,13 +6,15 @@
 #include <algorithm>        // std::min
 #include <stdexcept>        // std::out_of_range
 
+const size_t BUFFER_STEP = 100;
+
 template<typename T>
 class FastSafeArray {
 public:
 
     /// The default constructor.
     FastSafeArray()
-        :_size(0), _arr(nullptr)
+        :_size(0), _arr(nullptr), _bufferSize(0)
     {}
 
     /// Constructor creates an array with \a sz elements of value \a def
@@ -23,8 +25,16 @@ public:
             return;
         }
         _size = sz;
-        _arr = new T[sz];
-        for (int i = 0; i < sz; ++i) {
+
+        // 0 -> 0
+        // 1 -> 20
+        // 19 -> 20
+        // 20 -> 20
+        // 21 -> 40
+        _bufferSize = (sz / BUFFER_STEP + ((sz % BUFFER_STEP > 0) ? 1 :0)) * BUFFER_STEP;
+
+        _arr = new T[_bufferSize];
+        for (int i = 0; i < _size; ++i) {
             _arr[i] = def;
         }
     }
@@ -79,8 +89,20 @@ public:
             return;
         }
 
+        size_t newBufferSize = (newSz / BUFFER_STEP + ((newSz % BUFFER_STEP > 0) ? 1 :0)) * BUFFER_STEP;
+        if (newBufferSize == _bufferSize)
+        {
+            if (newSz > _size) {
+                for (int i = _size; i < newSz; ++i) {
+                    _arr[i] = def;
+                }
+            }
+            _size = newSz;
+            return;
+        }
+
         // create a new array, copy elements of the old array, and remove the old
-        T* newArr = new T[newSz];
+        T* newArr = new T[newBufferSize];
         for (int i = 0; i < std::min(newSz, _size); ++i) {
             newArr[i] = _arr[i];
         }
@@ -94,6 +116,7 @@ public:
         }
         _arr = newArr;
         _size = newSz;
+        _bufferSize = newBufferSize;
 
     }
 
@@ -139,6 +162,7 @@ private:
 private:
     T* _arr;                ///< Actual resource handler.
     size_t _size;           ///< Stores size of an array.
+    size_t _bufferSize;
 };// SafeArray
 
 
